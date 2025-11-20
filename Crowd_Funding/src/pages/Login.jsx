@@ -10,17 +10,17 @@ const Login = () => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
+const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const response = await api.post('/login/', credentials);
       
-      // 1. حفظ التوكن
       localStorage.setItem('token', response.data.token);
       
-      // 2. حفظ اسم المستخدم (مهم جداً للمقارنة لاحقاً)
-      // سنأخذه من الـ state credentials لأننا أرسلناه للتو
-      localStorage.setItem('username', credentials.username); 
+      // ملاحظة: تأكد أن الباك إند يرجع "first_name". 
+      // إذا لم يرجع، سيأخذ الـ username كبديل.
+      const firstName = response.data.first_name || credentials.username;
+      localStorage.setItem('first_name', firstName); 
       
       navigate('/');
     } catch (error) {
@@ -28,7 +28,6 @@ const Login = () => {
       alert('Invalid credentials');
     }
   };
-
   return (
     <div className="container mt-5" style={{ maxWidth: '500px' }}>
       <h2 className="mb-4">Login</h2>

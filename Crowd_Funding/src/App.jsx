@@ -8,44 +8,22 @@ import CreateProject from './pages/CreateProject';
 import EditProject from './pages/EditProject';
 import ProtectedRoute from './components/ProtectedRoute'; // 1. استدعاء ملف الحماية
 
+import MyProjects from './pages/MyProjects'; // استيراد الصفحة الجديدة
+
 function App() {
   return (
     <Router>
       <Navbar />
       <Routes>
-        {/* 2. تغليف الصفحة الرئيسية (مش هيدخل هنا غير لو معاه توكن) */}
-        <Route 
-          path="/" 
-          element={
-            <ProtectedRoute>
-              <ProjectList />
-            </ProtectedRoute>
-          } 
-        />
-
-        {/* يفضل حماية صفحات الإنشاء والتعديل أيضاً */}
-        <Route 
-          path="/create-project" 
-          element={
-            <ProtectedRoute>
-              <CreateProject />
-            </ProtectedRoute>
-          } 
-        />
+        <Route path="/" element={<ProtectedRoute><ProjectList /></ProtectedRoute>} />
         
-        <Route 
-          path="/edit-project/:id" 
-          element={
-            <ProtectedRoute>
-              <EditProject />
-            </ProtectedRoute>
-          } 
-        />
-
-        {/* الصفحات العامة (لا تحتاج حماية) */}
+        {/* إضافة مسار مشاريعي */}
+        <Route path="/my-projects" element={<ProtectedRoute><MyProjects /></ProtectedRoute>} />
+        
+        <Route path="/create-project" element={<ProtectedRoute><CreateProject /></ProtectedRoute>} />
+        <Route path="/edit-project/:id" element={<ProtectedRoute><EditProject /></ProtectedRoute>} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        
       </Routes>
     </Router>
   );

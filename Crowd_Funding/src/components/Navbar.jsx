@@ -1,66 +1,58 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { FaSignOutAlt, FaUser } from 'react-icons/fa';
 
 const Navbar = () => {
   const navigate = useNavigate();
-  
-  // جلب البيانات من المتصفح
   const token = localStorage.getItem('token');
-  const username = localStorage.getItem('username'); // 1. جلب اسم المستخدم
+  const firstName = localStorage.getItem('first_name'); // جلب الاسم الأول
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('username'); // 2. حذف الاسم عند الخروج لتنظيف البيانات
+    localStorage.clear();
     navigate('/login');
   };
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <div className="container">
-        <Link className="navbar-brand" to="/">CrowdFunding</Link>
+        <Link className="navbar-brand fw-bold" to="/">CrowdFunding</Link>
         
         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
           <span className="navbar-toggler-icon"></span>
         </button>
         
         <div className="collapse navbar-collapse" id="navbarNav">
-          {/* استخدمنا align-items-center لضبط محاذاة العناصر رأسياً */}
-          <ul className="navbar-nav ms-auto align-items-center">
+          {token && (
+            <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+              <li className="nav-item">
+                <Link className="nav-link" to="/">Home</Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/my-projects">My Projects</Link>
+              </li>
+            </ul>
+          )}
+
+          <div className="d-flex align-items-center ms-auto gap-3">
             {!token ? (
-              // حالة الزائر (غير مسجل دخول)
-              <>
+              <ul className="navbar-nav">
                 <li className="nav-item"><Link className="nav-link" to="/login">Login</Link></li>
                 <li className="nav-item"><Link className="nav-link" to="/register">Register</Link></li>
-              </>
+              </ul>
             ) : (
-              // حالة المستخدم المسجل
               <>
-                <li className="nav-item">
-                  <Link className="nav-link" to="/">Home</Link>
-                </li>
+                {/* عرض الاسم الأول */}
+                <div className="text-white d-flex align-items-center gap-2 border px-3 py-1 rounded border-secondary">
+                  <FaUser className="text-warning" />
+                  <span className="fw-bold small">Hi, {firstName}</span>
+                </div>
 
-                {/* 3. رابط إنشاء مشروع جديد بلون مميز */}
-                <li className="nav-item">
-                  <Link className="nav-link text-success fw-bold" to="/create-project">
-                    + New Project
-                  </Link>
-                </li>
-
-                {/* 4. عرض اسم المستخدم */}
-                <li className="nav-item ms-lg-3 me-lg-3">
-                  <span className="navbar-text text-white border border-secondary rounded px-2 py-1">
-                    User: {username || 'Member'}
-                  </span>
-                </li>
-
-                <li className="nav-item">
-                  <button className="btn btn-link nav-link text-danger" onClick={handleLogout}>
-                    Logout
-                  </button>
-                </li>
+                <button className="btn btn-link text-danger p-0" onClick={handleLogout} title="Logout">
+                  <FaSignOutAlt size={20} />
+                </button>
               </>
             )}
-          </ul>
+          </div>
         </div>
       </div>
     </nav>
