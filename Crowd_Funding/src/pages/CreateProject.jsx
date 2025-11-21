@@ -54,7 +54,7 @@ const CreateProject = () => {
             <input type="datetime-local" name="end_time" className="form-control" onChange={handleChange} required />
           </div>
         </div>
-        <button type="submit" className="btn btn-success">Launch Campaign</button>
+        <button type="submit" className="btn btn-primary">Launch Campaign</button>
       </form>
     </div>
   );

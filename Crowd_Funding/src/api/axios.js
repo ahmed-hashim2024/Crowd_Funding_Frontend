@@ -1,13 +1,14 @@
 import axios from 'axios';
 
-// قم بتغيير هذا الرابط لرابط السيرفر الفعلي الخاص بك
-const API_URL = 'http://localhost:8000/api'; 
+// في Vite بنوصل للمتغيرات عن طريق import.meta.env
+// لو المتغير مش موجود (مثلاً نسيناه)، بنحط رابط احتياطي
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
 
 const api = axios.create({
   baseURL: API_URL,
 });
 
-// Interceptor لإضافة الـ Token تلقائياً لكل الطلبات
+// Interceptor لإضافة الـ Token تلقائياً (كما هو)
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
   if (token) {

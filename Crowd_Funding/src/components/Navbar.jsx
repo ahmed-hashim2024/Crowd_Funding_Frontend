@@ -1,15 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { FaSignOutAlt, FaUser } from 'react-icons/fa';
+import { FaSignOutAlt } from 'react-icons/fa'; // حذفنا FaUser لعدم الحاجة له
 
 const Navbar = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem('token');
-  const firstName = localStorage.getItem('first_name'); // جلب الاسم الأول
+  
+  // لم نعد بحاجة لجلب الاسم
+  // const firstName = localStorage.getItem('first_name');
+
+  const [isOpen, setIsOpen] = useState(false);
 
   const handleLogout = () => {
     localStorage.clear();
     navigate('/login');
+  };
+
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
   };
 
   return (
@@ -17,36 +25,46 @@ const Navbar = () => {
       <div className="container">
         <Link className="navbar-brand fw-bold" to="/">CrowdFunding</Link>
         
-        <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <button 
+          className="navbar-toggler" 
+          type="button" 
+          onClick={toggleMenu}
+          aria-controls="navbarNav"
+          aria-expanded={isOpen}
+          aria-label="Toggle navigation"
+        >
           <span className="navbar-toggler-icon"></span>
         </button>
         
-        <div className="collapse navbar-collapse" id="navbarNav">
+        <div className={`collapse navbar-collapse ${isOpen ? 'show' : ''}`} id="navbarNav">
+          
           {token && (
-            <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+            // التعديل هنا: غيرنا mx-auto إلى ms-auto لتروح يمين
+            <ul className="navbar-nav ms-auto mb-2 mb-lg-0 text-center align-items-center">
               <li className="nav-item">
-                <Link className="nav-link" to="/">Home</Link>
+                <Link className="nav-link" to="/" onClick={() => setIsOpen(false)}>Home</Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link" to="/my-projects">My Projects</Link>
+                <Link className="nav-link" to="/my-projects" onClick={() => setIsOpen(false)}>My Projects</Link>
               </li>
             </ul>
           )}
 
-          <div className="d-flex align-items-center ms-auto gap-3">
+          {/* قسم الخروج والدخول */}
+          <div className="d-flex align-items-center justify-content-center gap-3 mt-3 mt-lg-0 ms-lg-3">
             {!token ? (
-              <ul className="navbar-nav">
-                <li className="nav-item"><Link className="nav-link" to="/login">Login</Link></li>
-                <li className="nav-item"><Link className="nav-link" to="/register">Register</Link></li>
+              <ul className="navbar-nav ms-auto">
+                <li className="nav-item">
+                    <Link className="nav-link" to="/login" onClick={() => setIsOpen(false)}>Login</Link>
+                </li>
+                <li className="nav-item">
+                    <Link className="nav-link" to="/register" onClick={() => setIsOpen(false)}>Register</Link>
+                </li>
               </ul>
             ) : (
               <>
-                {/* عرض الاسم الأول */}
-                <div className="text-white d-flex align-items-center gap-2 border px-3 py-1 rounded border-secondary">
-                  <FaUser className="text-warning" />
-                  <span className="fw-bold small">Hi, {firstName}</span>
-                </div>
-
+                {/* تم حذف كود عرض الاسم من هنا */}
+                
                 <button className="btn btn-link text-danger p-0" onClick={handleLogout} title="Logout">
                   <FaSignOutAlt size={20} />
                 </button>

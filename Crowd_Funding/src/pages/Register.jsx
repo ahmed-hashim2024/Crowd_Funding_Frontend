@@ -59,7 +59,7 @@ const Register = () => {
           <label className="form-label">Confirm Password</label>
           <input type="password" name="confirm_password" className="form-control" onChange={handleChange} required />
         </div>
-        <button type="submit" className="btn btn-success w-100">Register</button>
+        <button type="submit" className="btn btn-primary w-100">Register</button>
       </form>
     </div>
   );

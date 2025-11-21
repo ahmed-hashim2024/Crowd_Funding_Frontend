@@ -15,12 +15,12 @@ const handleSubmit = async (e) => {
     try {
       const response = await api.post('/login/', credentials);
       
+      // 1. حفظ التوكن
       localStorage.setItem('token', response.data.token);
       
-      // ملاحظة: تأكد أن الباك إند يرجع "first_name". 
-      // إذا لم يرجع، سيأخذ الـ username كبديل.
-      const firstName = response.data.first_name || credentials.username;
-      localStorage.setItem('first_name', firstName); 
+      // 2. (مهم جداً) حفظ اسم المستخدم الذي كتبه في الخانة
+      // تأكد أن هذا السطر موجود!
+      localStorage.setItem('username', credentials.username); 
       
       navigate('/');
     } catch (error) {
